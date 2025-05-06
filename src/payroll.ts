@@ -31,5 +31,35 @@ export function calculatePayslip(salary: Salary): Payslip {
     net: salary.gross,
     
   };
+  
+  // Alter herausfinden Jerome | AHV, IV und EO
+  const today = new Date()
+  let age = today.getFullYear() - salary.born.getFullYear()
+
+  let alreadyHadBirthday = false
+
+  if (today.getMonth() > salary.born.getMonth() || (today.getMonth() == salary.born.getMonth() && today.getDate() >= salary.born.getDate())) {
+    alreadyHadBirthday = true
+  }
+
+  if (!alreadyHadBirthday) {
+    age--
+  }
+
+  if (age >= 17 && today.getMonth() >= 1) {
+    result.deductions.set("AHV", DEDUCTION_RATES.get("AHV"))
+    result.deductions.set("IV", DEDUCTION_RATES.get("IV"))
+    result.deductions.set("EO", DEDUCTION_RATES.get("EO"))
+  }
+
+  // Jahreslohn über 2500 Nils | ALV und NBU
+
+
+
+  // Jahreslohn über 22680 Nils | PK
+
+
+
   return result;
+
 }
