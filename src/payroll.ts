@@ -24,13 +24,15 @@ export type Payslip = {
 
 export function calculatePayslip(salary: Salary): Payslip {
   // TODO: implement
-  const result: Payslip = {
+  let result: Payslip = {
     salary: salary,
     deductions: new Map(),
     totalDeductions: 0.0,
     net: salary.gross,
-    
+
   };
+
+  const yearlySalary = result.net * 12;
   
   // Alter herausfinden Jerome | AHV, IV und EO
   const today = new Date()
@@ -47,19 +49,31 @@ export function calculatePayslip(salary: Salary): Payslip {
   }
 
   if (age >= 17 && today.getMonth() >= 1) {
-    result.deductions.set("AHV", DEDUCTION_RATES.get("AHV"))
-    result.deductions.set("IV", DEDUCTION_RATES.get("IV"))
-    result.deductions.set("EO", DEDUCTION_RATES.get("EO"))
+    result = addDeduction(result, "AHV")
+    result = addDeduction(result, "IV")
+    result = addDeduction(result, "EO")
   }
 
-  // Jahreslohn über 2500 Nils | ALV und NBU
+  // Jahreslohn ab 2500 Nils | ALV und NBU
+  if(yearlySalary >= 2500){
+    result = addDeduction(result, "ALV")
+    result = addDeduction(result, "NBU")
+  }
 
 
+  // Jahreslohn ab 22680 Nils | PK
+  if(yearlySalary >= 22680){
+    result = addDeduction(result, "PK")
+  }
 
-  // Jahreslohn über 22680 Nils | PK
-
-
+  result.net = Number((result.net - (result.net / 100 * result.totalDeductions)).toFixed(2))
 
   return result;
 
+}
+
+function addDeduction(result: Payslip, deduction: string): Payslip{
+  result.deductions.set(deduction, DEDUCTION_RATES.get(deduction))
+  result.totalDeductions += DEDUCTION_RATES.get(deduction)
+  return result;
 }

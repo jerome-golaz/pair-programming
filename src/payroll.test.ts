@@ -22,7 +22,7 @@ test("16 years, 700.- monthly salary", () => {
     return calculatePayslip(salary);
   };
   // Assert
-  expect(actual()).toBe(expected);
+  expect(actual()).toStrictEqual(expected);
 });
 
 test("18 years, 1200.- monthly salary", () => {
@@ -50,7 +50,7 @@ test("18 years, 1200.- monthly salary", () => {
     return calculatePayslip(salary);
   };
   // Assert
-  expect(actual()).toBe(expected);
+  expect(actual()).toStrictEqual(expected);
 });
 
 test("21 years, 5900.- monthly salary", () => {
@@ -79,5 +79,5 @@ test("21 years, 5900.- monthly salary", () => {
     return calculatePayslip(salary);
   };
   // Assert
-  expect(actual()).toBe(expected);
+  expect(actual()).toStrictEqual(expected);
 });
