@@ -29,6 +29,7 @@ export function calculatePayslip(salary: Salary): Payslip {
     deductions: new Map(),
     totalDeductions: 0.0,
     net: salary.gross,
+    
   };
   return result;
 }
